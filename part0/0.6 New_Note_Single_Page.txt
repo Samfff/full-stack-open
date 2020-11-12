@@ -1,0 +1,17 @@
+title 0.6 New_Note_Single_Page
+
+kayttaja->selain: paina tallenna nappia
+
+note over selain:
+selain starts executing callback
+code for submit button
+which updates page tree adding note
+and then post change to server 
+end note
+
+selain->selain: redrawNotes()
+selain->selain: sendToServer(note)
+
+
+selain->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+server-->selain: [{"message":"note created"}]
