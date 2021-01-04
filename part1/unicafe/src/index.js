@@ -7,9 +7,9 @@ const Button = ({text, handleClick}) => (
 
 const App = () => {
   // tallenna napit omaan tilaansa
-  const [good, setGood] = useState(0)
+  const [good, setGood] = useState(1)
   const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
+  const [bad, setBad] = useState(-1)
 
   return (
     <div>
@@ -25,6 +25,9 @@ const App = () => {
           good {good} {"\n"}
           neutral {neutral} {"\n"}
           bad {bad} {"\n"}
+          all {good + neutral + bad} {"\n"}
+          average {(good + neutral + bad) / 3} {"\n"}
+          positive {100 * (good) / (good + neutral + bad )} %
         </pre>
       </div>
     </div>
