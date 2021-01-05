@@ -20,6 +20,10 @@ const Positive = ({good, neutral, bad}) => {
 }
 
 const Statistics = ({good, neutral, bad}) => {
+  const n = good + neutral + bad
+
+  if (n === 0) { return <p> No feedback given </p> }
+
   return (
     <div>
       <p>good {good} {"\n"} </p>
