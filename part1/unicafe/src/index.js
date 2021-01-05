@@ -5,15 +5,30 @@ const Button = ({text, handleClick}) => (
   <button onClick={handleClick}> {text} </button>
 )
 
+const Average = ({good, neutral, bad}) => {
+  const n = good + neutral + bad
+  const average = ( (good * 1) + (neutral * 0) + (bad * -1) ) / n
+  return (
+    <p>average {average}</p>
+  )
+}
+
+const Positive = ({good, neutral, bad}) => {
+  const n = good + neutral + bad
+  const positivePercent = (good / n)
+  return (<p>positive {100 * positivePercent} %</p>)
+}
+
 const Statistics = ({good, neutral, bad}) => {
   return (
-    <>
-      <FeedbackStatistic feedbackType={"good"} amount={good}/>
-      <FeedbackStatistic feedbackType={"neutral"} amount={neutral}/>
-      <FeedbackStatistic feedbackType={"bad"} amount={bad}/>
-      <AverageFeedback good={good} neutral={neutral} bad={bad}/>
-      <PositiveFeedback good={good} neutral={neutral} bad={bad}/>
-    </>
+    <div>
+      <p>good {good} {"\n"} </p>
+      <p>neutral {neutral} {"\n"} </p>
+      <p>bad {bad} {"\n"} </p>
+      <p>all {good + neutral + bad} {"\n"} </p>
+      <Average good={good} neutral={neutral} bad={bad}/>
+      <Positive good={good} neutral={neutral} bad={bad}/>
+    </div>
   )
 }
 
@@ -33,16 +48,7 @@ const App = () => {
       <Button text={"bad"} handleClick={() => setBad(bad+1)}/>
       </div>
       <h1>statistics</h1>
-      <div>
-        <pre>
-          good {good} {"\n"}
-          neutral {neutral} {"\n"}
-          bad {bad} {"\n"}
-          all {good + neutral + bad} {"\n"}
-          average {(1 * good + 0 * neutral + -1 * bad) / 3} {"\n"}
-          positive {100 * (good) / (good + neutral + bad )} %
-        </pre>
-      </div>
+      <Statistics good={good} neutral={neutral} bad={bad}/>
     </div>
   )
 }
