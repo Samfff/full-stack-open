@@ -24,7 +24,7 @@ const Average = ({good, neutral, bad}) => {
 
 const Positive = ({good, neutral, bad}) => {
   const n = good + neutral + bad
-  const positivePercent = (good / n)
+  const positivePercent = 100 * (good / n)
   return (
     (<p>positive {positivePercent} %</p>)
   )
