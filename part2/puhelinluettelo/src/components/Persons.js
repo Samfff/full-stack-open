@@ -1,20 +1,19 @@
-import React from 'react';
+import React from 'react'
 import Number from './Number'
 
-const Persons = ({persons, filter}) => {
+const Persons = ({persons, filter, handleDelete}) => {
+    const caseinsensitiveFilter = (person) => (
+      person.name.toLowerCase().includes(
+        filter.toLowerCase()
+      )
+    )
+    return (
+      <p>
+        {persons
+          .filter(caseinsensitiveFilter)
+          .map(person => <Number key={person.name} person={person} handleDelete={handleDelete}/>)}
+      </p>
+    )
+  }
 
-  const filteredNumbers = persons.filter(person =>
-                            person.name.toLowerCase()
-                                        .includes(filter
-                                          .toLowerCase()));
-  return (
-
-    <div>
-      {filteredNumbers.map(person => <Number key={person.name} person={person} />)}
-    </div>
-
-  )
-
-}
-
-export default Persons;
+export default Persons
