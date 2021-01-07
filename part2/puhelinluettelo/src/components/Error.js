@@ -19,7 +19,7 @@ const Error = ({ message }) => {
   return <div style={notificationStyle}>{message.content}</div>;
 };
 
-Notification.propTypes = {
+Error.propTypes = {
   message: PropTypes.objectOf(PropTypes.string).isRequired
 };
 

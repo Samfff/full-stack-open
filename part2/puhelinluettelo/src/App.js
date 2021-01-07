@@ -48,19 +48,23 @@ const App = () => {
     const updatedPerson = {...existingPerson, number: newNumber}
 
     personService
-      .update(updatedPerson.id, updatedPerson)
-      .then(returnedPerson =>
-        setPersons(
-          persons.map(
-            person =>
-              person.id !== existingPerson.id ? person: returnedPerson
-            )
-          )
-        )
+     .update(updatedPerson.id, updatedPerson)
+     .then(returnedPerson => {
+       setPersons(
+         persons.map(
+           person =>
+             person.id !== existingPerson.id ? person: returnedPerson
+           )
+         )
+       showNotification(`Updated ${updatedPerson.name}`)
+       })
+     .catch(_ => {
+       setMessage({content: `Information of ${name} has already been removed from server`, isError: true})
+     })
   }
 
-  const handleAddPerson = (event) => {
-    event.preventDefault()
+  const handleAddPerson = addedPerson => {
+    addedPerson.preventDefault()
 
     if (nameAlreadyExists(persons, newName)) {
       const acceptModification = window.confirm(
@@ -69,15 +73,15 @@ const App = () => {
 
       if (acceptModification) {
         handleUpdatePerson(newName)
-        showNotification(`Updated ${newName.name}`)
       }
     } else {
-        personService.create(newPerson).then(newPerson =>
-            setPersons(persons.concat(newPerson)))
-
+        personService.create(newPerson)
+        .then(newPerson => {
+            setPersons(persons.concat(newPerson))
+            showNotification(`Added ${newPerson.name}`)
+        })
         setNewName('')
         setNewNumber('')
-        showNotification(`Added ${newName.name}`)
     }
   }
 
@@ -86,11 +90,11 @@ const App = () => {
     if (accepted) {
       personService
         .remove(deletedPerson.id)
-        .then(
+        .then(() => {
           setPersons(persons.filter(person => person.id !== deletedPerson.id))
-        )
-        showNotification(`Updated ${deletedPerson.name}`)
-    }
+          showNotification(`Deleted ${deletedPerson.name}`)
+        })
+      }
   }
 
   return (
