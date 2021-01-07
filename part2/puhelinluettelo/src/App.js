@@ -3,6 +3,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import personService from './services/persons'
+import Error from './components/Error'
 
 
 const App = () => {
@@ -11,6 +12,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
+  const [ message, setMessage ] = useState({content: null})
 
   const newPerson = {
     name: newName,
@@ -29,10 +31,18 @@ const App = () => {
         )
     }, [])
 
+  const showNotification = (content, color = 'green') => {
+    setMessage({ content, color });
+    setTimeout(() => {
+      setMessage({ content: null });
+    }, 5000);
+  };
+
+
   const handleNameChange = (event) => setNewName(event.target.value)
   const handleNumberChange = (event) => setNewNumber(event.target.value)
   const handleFilterChange = (event) => setFilter(event.target.value)
-  
+
   const handleUpdatePerson = (name) => {
     const existingPerson = persons.find(p => p.name === name)
     const updatedPerson = {...existingPerson, number: newNumber}
@@ -59,6 +69,7 @@ const App = () => {
 
       if (acceptModification) {
         handleUpdatePerson(newName)
+        showNotification(`Updated ${newName.name}`)
       }
     } else {
         personService.create(newPerson).then(newPerson =>
@@ -66,6 +77,7 @@ const App = () => {
 
         setNewName('')
         setNewNumber('')
+        showNotification(`Added ${newName.name}`)
     }
   }
 
@@ -77,12 +89,14 @@ const App = () => {
         .then(
           setPersons(persons.filter(person => person.id !== deletedPerson.id))
         )
+        showNotification(`Updated ${deletedPerson.name}`)
     }
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Error message={message} />
       <Filter filter={filter} onFilterChange={handleFilterChange}/>
       <h2>add a new</h2>
       <PersonForm handleAddPerson={handleAddPerson} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} newName={newName} newNumber={newNumber}/>
