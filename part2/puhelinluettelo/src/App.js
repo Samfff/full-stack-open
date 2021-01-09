@@ -9,18 +9,15 @@ import Error from './components/Error'
 const App = () => {
 
   const [ persons, setPersons] = useState([])
-  const [ newName, setNewName ] = useState('')
-  const [ newNumber, setNewNumber ] = useState('')
   const [ filter, setFilter ] = useState('')
   const [ message, setMessage ] = useState({content: null})
+
+  const [ newName, setNewName ] = useState('')
+  const [ newNumber, setNewNumber ] = useState('')
 
   const newPerson = {
     name: newName,
     number: newNumber
-  }
-
-  const nameAlreadyExists = (persons, name) => {
-    return persons.filter(person=>person.name === name).length
   }
 
   useEffect(() => {
@@ -66,6 +63,10 @@ const App = () => {
   const handleAddPerson = addedPerson => {
     addedPerson.preventDefault()
 
+    const nameAlreadyExists = (persons, name) => {
+      return persons.filter(person=>person.name === name).length
+    }
+
     if (nameAlreadyExists(persons, newName)) {
       const acceptModification = window.confirm(
         `${newName} is already added to phonebook, replace the old number with a new one?`
@@ -74,6 +75,7 @@ const App = () => {
       if (acceptModification) {
         handleUpdatePerson(newName)
       }
+
     } else {
         personService.create(newPerson)
         .then(newPerson => {
